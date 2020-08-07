@@ -9,15 +9,15 @@
 import UIKit
 import ARKit
 
-open class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+public class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
-    open var eyeTrackSceneView: ARSCNView!
+    public var eyeTrackSceneView: ARSCNView!
 
-    open var eyeTrack = EyeTrack(type: DeviceType.iPhone)
+    public var eyeTrack = EyeTrack(type: DeviceType.iPhone)
 
-    open let arConfiguration = ARFaceTrackingConfiguration()
+    public let arConfiguration = ARFaceTrackingConfiguration()
 
-    open func setup() {
+    public func setup() {
         let frame = super.view.frame
         // Initialize ARSCNView
         eyeTrackSceneView = ARSCNView(frame: frame)
@@ -34,7 +34,7 @@ open class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessio
         eyeTrack.registerSceneView(sceneView: eyeTrackSceneView)
     }
     
-    open func setup(sceneView: ARSCNView) {
+    public func setup(sceneView: ARSCNView) {
         // Initialize ARSCNView
         eyeTrackSceneView = sceneView
         self.view.addSubview(eyeTrackSceneView!)
@@ -83,30 +83,30 @@ open class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessio
     // MARK: - ARSCNViewDelegate
 
 
-    open func session(_ session: ARSession, didFailWithError error: Error) {
+    public func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
 
     }
 
-    open func sessionWasInterrupted(_ session: ARSession) {
+    public func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
 
     }
 
-    open func sessionInterruptionEnded(_ session: ARSession) {
+    public func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
 
     }
 
     // Update Some View when updating Face Anchor
-    open func updateViewWithUpdateAnchor() {
+    public func updateViewWithUpdateAnchor() {
     }
 }
 
 
-open extension EyeTrackViewController {
+public extension EyeTrackViewController {
 
-    open func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+    public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         eyeTrack.face.node.transform = node.transform
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
@@ -114,7 +114,7 @@ open extension EyeTrackViewController {
         updateAnchor(withFaceAnchor: faceAnchor)
     }
 
-    open func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+    public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         guard let sceneTransformInfo = eyeTrackSceneView.pointOfView?.transform else {
             return
         }
@@ -122,7 +122,7 @@ open extension EyeTrackViewController {
         eyeTrack.device.node.transform = sceneTransformInfo
     }
 
-    open func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+    public func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         eyeTrack.face.node.transform = node.transform
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
@@ -130,7 +130,7 @@ open extension EyeTrackViewController {
         updateAnchor(withFaceAnchor: faceAnchor)
     }
 
-    open func updateAnchor(withFaceAnchor anchor: ARFaceAnchor) {
+    public func updateAnchor(withFaceAnchor anchor: ARFaceAnchor) {
         DispatchQueue.main.async {
             self.eyeTrack.update(anchor: anchor)
             self.updateViewWithUpdateAnchor()

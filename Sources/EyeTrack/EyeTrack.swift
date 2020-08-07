@@ -9,30 +9,30 @@ import UIKit
 import ARKit
 
 
-open let IS_BLINK_THRESHOLD: Float = 0.4
-open let SMOOTHING_RANGE: Int = 10
+public let IS_BLINK_THRESHOLD: Float = 0.4
+public let SMOOTHING_RANGE: Int = 10
 
-open class EyeTrack {
-    open var bufferLookAtPosition: [CGPoint] = []
-    open var lookAtPosition: CGPoint = CGPoint(x: 0, y: 0)
-    open var lookAtPoint: CGPoint = CGPoint(x: 0, y: 0)
+public class EyeTrack {
+    public var bufferLookAtPosition: [CGPoint] = []
+    public var lookAtPosition: CGPoint = CGPoint(x: 0, y: 0)
+    public var lookAtPoint: CGPoint = CGPoint(x: 0, y: 0)
     
-    open var device: Device
-    open var face: Face
+    public var device: Device
+    public var face: Face
 
-    open init(type: DeviceType) {
+    public init(type: DeviceType) {
         self.device = Device(type: type)
         self.face = Face()
     }
 
     // SceneViewと紐つける
-    open func registerSceneView(sceneView: ARSCNView) {
+    public func registerSceneView(sceneView: ARSCNView) {
         sceneView.scene.rootNode.addChildNode(self.face.node)
         sceneView.scene.rootNode.addChildNode(self.device.node)
     }
 
     // ARFaceAnchorを基に情報を更新
-    open func update(anchor: ARFaceAnchor) {
+    public func update(anchor: ARFaceAnchor) {
         // 顔座標更新(眼球座標更新)
         self.face.update(anchor: anchor)
         // 瞬き判定
@@ -44,7 +44,7 @@ open class EyeTrack {
     }
 
     // 視点位置更新
-    open func updateLookAtPosition() {
+    public func updateLookAtPosition() {
         let rightEyeHittingAt = self.face.rightEye.hittingAt(device: device)
         let leftEyeHittingAt = self.face.leftEye.hittingAt(device: device)
         let lookAt = CGPoint(x: (rightEyeHittingAt.x + leftEyeHittingAt.x) / 2, y: -(rightEyeHittingAt.y + leftEyeHittingAt.y) / 2)
