@@ -9,9 +9,9 @@
 import UIKit
 import ARKit
 
-public class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
-    public var eyeTrackSceneView: ARSCNView!
+    var eyeTrackSceneView: ARSCNView!
 
     public var eyeTrack = EyeTrack(type: DeviceType.iPhone)
 
@@ -51,7 +51,7 @@ public class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSess
     }
 
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         // Set up SceneKit
         setup()
@@ -59,7 +59,7 @@ public class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSess
         // setup(sceneView: mySceneView)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Create a session configuration
         guard ARFaceTrackingConfiguration.isSupported else {
@@ -73,7 +73,7 @@ public class EyeTrackViewController: UIViewController, ARSCNViewDelegate, ARSess
  
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Pause the view's session
         eyeTrackSceneView.session.pause()
