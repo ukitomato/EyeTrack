@@ -8,21 +8,21 @@
 import UIKit
 import ARKit
 
-enum DeviceType {
+open enum DeviceType {
     case iPhone
     case iPad
 }
 
 // デバイス情報保持クラス
-class Device {
-    let type: DeviceType
-    let screenSize: CGSize
-    let screenPointSize: CGSize
+open class Device {
+    open let type: DeviceType
+    open let screenSize: CGSize
+    open let screenPointSize: CGSize
 
-    var node: SCNNode
-    var screenNode: SCNNode
+    open var node: SCNNode
+    open var screenNode: SCNNode
 
-    init(type: DeviceType) {
+    open init(type: DeviceType) {
         self.type = type
         switch type {
         case DeviceType.iPhone:
@@ -49,14 +49,14 @@ class Device {
 }
 
 // 顔情報保持クラス
-class Face {
-    let node: SCNNode
-    let rightEye: Eye
-    let leftEye: Eye
-    var transform: simd_float4x4 = simd_float4x4()
+open class Face {
+    open let node: SCNNode
+    open let rightEye: Eye
+    open let leftEye: Eye
+    open var transform: simd_float4x4 = simd_float4x4()
 
 
-    init() {
+    open init() {
         // Node生成
         self.node = SCNNode()
         self.rightEye = Eye()
@@ -65,7 +65,7 @@ class Face {
         self.node.addChildNode(self.rightEye.node)
     }
 
-    func update(anchor: ARFaceAnchor) {
+    open func update(anchor: ARFaceAnchor) {
         // 座標更新
         self.transform = anchor.transform
         self.leftEye.node.simdTransform = anchor.leftEyeTransform
@@ -76,7 +76,7 @@ class Face {
     }
 
     // デバイスとの距離を取得
-    func getDistanceToDevice() -> Float {
+    open func getDistanceToDevice() -> Float {
         // Average distance from two eyes
         (self.leftEye.getDistanceToDevice() + self.rightEye.getDistanceToDevice()) / 2
     }
@@ -85,14 +85,14 @@ class Face {
 }
 
 // 目情報保持クラス
-class Eye {
-    var lookAtPosition: CGPoint = CGPoint(x: 0, y: 0)
-    var blink: Float = 1.0
-    var node: SCNNode
-    var target: SCNNode
+open class Eye {
+    open var lookAtPosition: CGPoint = CGPoint(x: 0, y: 0)
+    open var blink: Float = 1.0
+    open var node: SCNNode
+    open var target: SCNNode
 
 
-    init() {
+    open init() {
         // Node生成
         self.node = {
             let geometry = SCNCone(topRadius: 0.005, bottomRadius: 0, height: 0.1)
@@ -114,12 +114,12 @@ class Eye {
     }
 
     // Deviceとの距離を取得
-    func getDistanceToDevice() -> Float {
+    open func getDistanceToDevice() -> Float {
         (self.node.worldPosition - SCNVector3Zero).length()
     }
 
     // [目と視点を結ぶ直線]と[デバイスのスクリーン平面]の交点を取得
-    func hittingAt(device: Device) -> CGPoint {
+    open func hittingAt(device: Device) -> CGPoint {
         let heightCompensation: CGFloat = 312
 
         let deviceScreenEyeHitTestResults = device.node.hitTestWithSegment(from: self.target.worldPosition, to: self.node.worldPosition, options: nil)
